@@ -6,6 +6,7 @@ try:
 
     cursor = conexion.cursor()
 
+    #Model tables
     cursor.execute('''CREATE TABLE IF NOT EXISTS admin(
                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                    name TEXT NOT NULL,
@@ -34,14 +35,34 @@ try:
     cursor.execute('''CREATE TABLE IF NOT EXISTS subjects(
                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                    name TEXT NOT NULL)''')
-
+    
     cursor.execute('''CREATE TABLE IF NOT EXISTS notes(
                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                   student_id INTEGER NOT NULL,
+                   estudiante_id INTEGER NOT NULL,
                    subject_id INTEGER NOT NULL,
-                   note REAL NOT NULL,
-                   FOREIGN KEY(student_id) REFERENCES students(id),
-                   FOREIGN KEY(subject_id) REFERENCES subjects(id))''')
+                   note1 INTEGER NULL,
+                   note2 INTEGER NULL,
+                   note3 INTEGER NULL,
+                   note4 INTEGER NULL,
+                   leccion INTEGER NULL,
+                   examen INTEGER NULL,
+                   FOREIGN KEY (estudiante_id) REFERENCES students(id),
+                   FOREIGN KEY (subject_id) REFERENCES subjects(id))''')
+    #Models 
+    conexion.execute('''CREATE TABLE IF NOT EXISTS teacher_courses(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    teacher_id INTEGER NOT NULL,
+                    course_id INTEGER NOT NULL,
+                    FOREIGN KEY (teacher_id) REFERENCES teacher(id),
+                    FOREIGN KEY (course_id) REFERENCES courses(id))''')
+    
+    conexion.execute('''CREATE TABLE IF NOT EXISTS course_subjects(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    course_id INTEGER NOT NULL,
+                    subject_id INTEGER NOT NULL,
+                    FOREIGN KEY (course_id) REFERENCES courses(id),
+                    FOREIGN KEY (subject_id) REFERENCES subjects(id))''')
+    
 
     conexion.commit()
 
