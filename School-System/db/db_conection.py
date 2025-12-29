@@ -48,7 +48,7 @@ try:
                    examen INTEGER NULL,
                    FOREIGN KEY (estudiante_id) REFERENCES students(id),
                    FOREIGN KEY (subject_id) REFERENCES subjects(id))''')
-    #Models 
+    #Relationship Models 
     conexion.execute('''CREATE TABLE IF NOT EXISTS teacher_courses(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     teacher_id INTEGER NOT NULL,
