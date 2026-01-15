@@ -21,6 +21,7 @@ class AdminService:
     
     def create_teacher_service(self, name, fullname, username, password):
         if not name or not fullname or not username or not password:
+            print("Fields are required")
             return False
 
         if type(name) is str or type(fullname) is str or type(username) is str or type(password) is str:
@@ -29,4 +30,15 @@ class AdminService:
         else:
             print("No se pudo crear user")
 
+    def create_courses(self, name, parallel):
+        if not name or not parallel:
+            print("Fields are required")
+            return False
+        
+        vowels = ["A","B","C"]
 
+        if type(name) is str and (type(parallel) is str and parallel in vowels):
+            self.admin_consulta.create_course(name, parallel)
+            print("Curso creado con exito")
+        else:
+            print("No se pudo crear el curso")
