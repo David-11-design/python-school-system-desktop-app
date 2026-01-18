@@ -26,3 +26,13 @@ class adminConsulta:
             return True
         except Exception as e:
             print(f"Error creating course: {e}")
+
+    
+    def create_subject(self, name):
+        try:
+            cursor = self.conection.cursor()
+            cursor.execute("INSERT INTO subjects (name) values (?)", (name,))
+            self.conection.commit()
+            return True
+        except Exception as e:
+            print(f"Error creating subject: {e}")
