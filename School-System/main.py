@@ -9,7 +9,9 @@ def main():
     admin_consulta = adminConsulta(cone)
     admin_servic = admin_service.AdminService(admin_consulta)
 
-    admin_servic.create_courses("1ro", "G")
+    #admin_servic.create_courses("3ro", "D")
+
+    admin_servic.create_subject("Math")
 
     
 

@@ -24,21 +24,37 @@ class AdminService:
             print("Fields are required")
             return False
 
-        if type(name) is str or type(fullname) is str or type(username) is str or type(password) is str:
-            self.admin_consulta.create_teacher(name, fullname, username, password)
-            print("User creado con exito")
+        if isinstance(name, str) and isinstance(fullname, str) and isinstance(username, str) and isinstance(password, str):
+            if self.admin_consulta.create_teacher(name, fullname, username, password):
+                print("User created successfully")
+            else:
+                print("User could not be created")
         else:
-            print("No se pudo crear user")
+            print("The fields must be strings")
 
     def create_courses(self, name, parallel):
         if not name or not parallel:
             print("Fields are required")
             return False
         
-        vowels = ["A","B","C"]
+        vowels_parallels = ["A","B","C"]
 
-        if type(name) is str and (type(parallel) is str and parallel in vowels):
-            self.admin_consulta.create_course(name, parallel)
-            print("Curso creado con exito")
+        if isinstance(name, str) and (isinstance(parallel, str) and parallel in vowels_parallels):
+            if self.admin_consulta.create_course(name, parallel):
+                print("The course was created successfully")
+            else:
+                print("The course could not be created")
         else:
-            print("No se pudo crear el curso")
+            print("the fields 'name and parallel' must be string and parallel must be A, B, or C")
+
+    def create_subject(self, name):
+        if not name:
+            print("The field 'name' is required")
+        
+        if isinstance(name, str):
+            if self.admin_consulta.create_subject(name):
+                print("The subject was created successfully")
+            else:
+                print("The subject could not be created")
+        else:
+            print("The field 'name' must be a string")
