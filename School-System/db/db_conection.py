@@ -12,7 +12,7 @@ class DBConection:
     
     def Scripts_Tables(self):
         try:
-            cursor = self.conextion.cursor()
+            cursor = self.conection.cursor()
 
             cursor.execute('''CREATE TABLE IF NOT EXISTS admin(
                    id INTEGER PRIMARY KEY AUTOINCREMENT,

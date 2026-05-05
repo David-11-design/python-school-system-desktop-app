@@ -1,60 +1,111 @@
+import random, re
+
 class AdminService:
 
-    def __init__(self, admin_consulta):
+    def __init__(self, api_client):
         # Dependency Injection
-        self.admin_consulta = admin_consulta
+        self.api_client = api_client
     
     def login(self, username, password):
         
         if not username or not password:
             return False
         
-        admin = self.admin_consulta.get_by_username(username)
+        user = self.api_client.login(username, password)
 
-        if not admin:
-            return False
-        
-        if password != admin[4]:
-            return True
-        
-        return True
-    
-    def create_teacher_service(self, name, fullname, username, password):
-        if not name or not fullname or not username or not password:
-            print("Fields are required")
+        if not user:
             return False
 
-        if isinstance(name, str) and isinstance(fullname, str) and isinstance(username, str) and isinstance(password, str):
-            if self.admin_consulta.create_teacher(name, fullname, username, password):
-                print("User created successfully")
+        if user.get("user_type") == "admin":
+            return "admin"
+        
+        if user.get("user_type") == "teacher":
+            return "teacher"
+        
+        return False
+
+    def createTeacherService(self, name, fullname):
+        if not name or not fullname:
+            return False
+
+        if isinstance(name, str) and isinstance(fullname, str):
+
+            username = "".join([name, fullname]).lower().strip()
+
+            password = ""
+
+            for i in range(4):
+                numbers = random.choice(range(0,10))
+                password += str(numbers)
+
+            if self.api_client.create_teacher(name, fullname, username, password):
+                return True
             else:
                 print("User could not be created")
+                return False
         else:
             print("The fields must be strings")
 
-    def create_courses(self, name, parallel):
+    def create_course_service(self, name, parallel):
         if not name or not parallel:
             print("Fields are required")
-            return False
+            return "Empty field"
         
         vowels_parallels = ["A","B","C"]
 
-        if isinstance(name, str) and (isinstance(parallel, str) and parallel in vowels_parallels):
-            if self.admin_consulta.create_course(name, parallel):
-                print("The course was created successfully")
+        if (isinstance(name, str) and (isinstance(parallel, str)) and parallel in vowels_parallels):
+            if self.api_client.CreateCourseAdmin(name, parallel):
+                return True
             else:
-                print("The course could not be created")
+                return False
         else:
-            print("the fields 'name and parallel' must be string and parallel must be A, B, or C")
+            return "Invalid parallel"
 
     def create_subject(self, name):
-        if not name:
-            print("The field 'name' is required")
+        if re.search(r"[^a-zA-Z ]", name): 
+            return False
         
-        if isinstance(name, str):
-            if self.admin_consulta.create_subject(name):
-                print("The subject was created successfully")
-            else:
-                print("The subject could not be created")
+        if self.admin_consulta.create_subjecta(name):
+            return "Created"
         else:
-            print("The field 'name' must be a string")
+            return False
+        
+    def get_all_teacher_service(self):
+        teacher_list = []
+
+        for teacher in self.admin_consulta.all_teacher():
+            diccionario = {"id": teacher[0],
+                           "name": teacher[1],
+                           "fullname": teacher[2]}
+            teacher_list.append(diccionario)
+        return teacher_list
+
+    def get_all_course_service(self):
+        course_list = []
+
+        for course in self.admin_consulta.all_courses():
+            diccionario = {"id": course[0],
+                           "name": course[1],
+                           "parallel": course[2]}
+            course_list.append(diccionario)
+        return course_list
+
+    def assign_teacher_courses(self, teacher_ui, course_ui):
+
+        teacher_id = None
+        course_id = None
+
+        for teacher in self.admin_consulta.all_teacher():
+            if f"{teacher[1]} {teacher[2]}" == teacher_ui:
+                teacher_id = teacher[0]
+                break
+        
+        for course in self.admin_consulta.all_courses():
+            if f"{course[1]} {course[2]}" == course_ui:
+                course_id = course[0]
+                break
+        
+        if self.admin_consulta.link_teacher_course(teacher_id, course_id):
+            return True
+        else:
+            return False
