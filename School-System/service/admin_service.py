@@ -49,17 +49,17 @@ class AdminService:
     def create_course_service(self, name, parallel):
         if not name or not parallel:
             print("Fields are required")
-            return False
+            return "Empty field"
         
         vowels_parallels = ["A","B","C"]
 
-        if isinstance(name, str) and (isinstance(parallel, str) and parallel in vowels_parallels):
-            if self.admin_consulta.create_course(name, parallel):
+        if (isinstance(name, str) and (isinstance(parallel, str)) and parallel in vowels_parallels):
+            if self.api_client.CreateCourseAdmin(name, parallel):
                 return True
             else:
                 return False
         else:
-            return False
+            return "Invalid parallel"
 
     def create_subject(self, name):
         if re.search(r"[^a-zA-Z ]", name): 

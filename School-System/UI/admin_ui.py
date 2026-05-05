@@ -50,11 +50,26 @@ class AdminUi:
             name = self.name.get()
             fullname = self.fullname.get()
 
+            Answer = self.service.create_course_service(name, fullname)
+
+            if Answer is True:
+                messagebox.showinfo("Success", "Teacher created successfully")
+
+            elif Answer == "Empty field":
+                messagebox.showwarning("Error", "Fields are required")
+
+            elif Answer == "Invalid parallel":
+                messagebox.showwarning("Error", "Invalid parallel")
+
+            else:
+                messagebox.showerror("Error", "Teacher could not be created")
+
+            """"
             if self.service.createTeacherService(name, fullname):
                 messagebox.showinfo("Success", "Teacher created successfully")
             else:
                 messagebox.showerror("Error", "Teacher could not be created")
-            
+            """
     def create_courses(self):
         self.frame.destroy()
         self.frame = tk.Frame(self.root, bg="lightgray", width=1000, height=600)

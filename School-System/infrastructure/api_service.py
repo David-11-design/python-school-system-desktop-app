@@ -35,3 +35,17 @@ class ApiClient:
         except Exception as e:
             print(f"An error occurred: {e}")
             return None
+    
+    def CreateCourseAdmin(self, name, parallel):
+        url = "http://127.0.0.1:8000/Create-Course/"
+
+        data = {
+            "name": name,
+            "parallel": parallel
+        }
+        try:
+            response = req.post(url, json=data)
+            return response.json()
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
