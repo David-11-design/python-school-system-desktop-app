@@ -94,13 +94,14 @@ class AdminUi:
         name = self.name.get()
         parallel = self.parallel.get()
 
-        if not self.service.create_course_service(name, parallel):
+        service_response = self.service.create_course_service(name, parallel)   
+
+        if service_response == "Empty field":
             messagebox.showwarning("Fields are required")
-        
-        if self.service.create_course_service(name, parallel):
-            messagebox.showinfo("Success", "Course created successfully")
+        elif service_response == "Course already exists":
+            messagebox.showwarning("Course already exists")
         else:
-            messagebox.showerror("Error", "Course could not be created")
+            messagebox.showinfo("Created")
         
     def create_subject(self):
         self.frame.destroy()
@@ -175,8 +176,9 @@ class AdminUi:
         
         b = self.service.assign_teacher_courses(selected_teacher, selected_course)   
 
-        if b:
-            messagebox.showinfo("Success", "Teacher assigned to course successfully")
+        if b == "Empty field":
+            messagebox.showwarning("Fields are required")
+        elif b == "Course already exists":
+            messagebox.showwarning("Course already exists")
         else:
-            messagebox.showerror("Error", "Teacher could not be assigned to course")
-            
+            messagebox.showinfo("Success", "Teacher assigned to course successfully")

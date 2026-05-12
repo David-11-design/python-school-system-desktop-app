@@ -54,10 +54,21 @@ class AdminService:
         vowels_parallels = ["A","B","C"]
 
         if (isinstance(name, str) and (isinstance(parallel, str)) and parallel in vowels_parallels):
+            
+            response = self.api_client.CreateCourseAdmin(name, parallel)
+
+            if "error_empty" in response:
+                return "Empty field"
+            elif "error_exists" in response:
+                return "Course already exists"
+            else:
+                return True
+            """
             if self.api_client.CreateCourseAdmin(name, parallel):
                 return True
             else:
                 return False
+            """
         else:
             return "Invalid parallel"
 

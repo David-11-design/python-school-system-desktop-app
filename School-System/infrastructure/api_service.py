@@ -43,6 +43,7 @@ class ApiClient:
             "name": name,
             "parallel": parallel
         }
+
         try:
             response = req.post(url, json=data)
             return response.json()
